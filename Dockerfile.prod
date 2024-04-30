@@ -1,0 +1,14 @@
+FROM golang as base
+
+FROM base as built
+
+WORKDIR /go/app/api
+COPY . .
+ENV CGO_ENABLED=0
+RUN go mod download
+RUN go mod verify
+RUN go build -o /tmp/wallet-sse ./*.go
+
+FROM busybox
+COPY --from=built /tmp/wallet-sse /usr/bin/wallet-sse
+CMD ["./usr/bin/wallet-sse"]

@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/opt/app/api
+    ports:
+      - "4445:4445"
+  redis:
+    container_name: wallet-redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:
+networks:
+  wallet:
